@@ -9,7 +9,7 @@ BYTE backCode[HOOK_LEN] = { 0 };
 //获取模块基址
 DWORD getWechatWin()
 {
-	return (DWORD)LoadLibrary("WeChatWin.dll");
+	return (DWORD)LoadLibrary(L"WeChatWin.dll");
 }
 
 
@@ -56,13 +56,13 @@ VOID StartHook(DWORD hookAdd, LPVOID jmpAdd)
 
 	//备份数据
 	if (ReadProcessMemory(hWHND, (LPVOID)hookAdd, backCode, HOOK_LEN, NULL) == 0) {
-		MessageBox(NULL, "hook地址的数据读取失败", "读取失败", MB_OK);
+		MessageBox(NULL, L"hook地址的数据读取失败", L"读取失败", MB_OK);
 		return;
 	}
 
 	//真正的hook开始了 把我们要替换的函数地址写进去 让他直接跳到我们函数里面去然后我们处理完毕后再放行吧！
 	if (WriteProcessMemory(hWHND, (LPVOID)hookAdd, JmpCode, HOOK_LEN, NULL) == 0) {
-		MessageBox(NULL, "hook写入失败，函数替换失败", "错误", MB_OK);
+		MessageBox(NULL, L"hook写入失败，函数替换失败", L"错误", MB_OK);
 		return;
 	}
 
@@ -73,7 +73,7 @@ VOID UnHook(DWORD HookAdd)
 {
 	HANDLE hWHND = OpenProcess(PROCESS_ALL_ACCESS, NULL, GetCurrentProcessId());
 	if (WriteProcessMemory(hWHND, (LPVOID)HookAdd, backCode, HOOK_LEN, NULL) == 0) {
-		MessageBox(NULL, "hook卸载失败", "失败", MB_OK);
+		MessageBox(NULL, L"hook卸载失败", L"失败", MB_OK);
 		return;
 	}
 }

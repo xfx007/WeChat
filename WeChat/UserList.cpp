@@ -109,15 +109,15 @@ VOID insertUserLists(DWORD userData)
 		item.mask = LVIF_TEXT;
 
 		item.iSubItem = 0;
-		item.pszText = UnicodeToANSI(wxid);
+		item.pszText = wxid;
 		ListView_InsertItem(gHwndList, &item);
 
 		item.iSubItem = 1;
-		item.pszText = UnicodeToANSI(wxuserID);
+		item.pszText = wxuserID;
 		ListView_SetItem(gHwndList, &item);
 
 		item.iSubItem = 2;
-		item.pszText = UnicodeToANSI(nick);
+		item.pszText = nick;
 		ListView_SetItem(gHwndList, &item);
 	}
 }

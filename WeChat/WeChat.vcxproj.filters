@@ -22,6 +22,9 @@
     <Filter Include="通讯录">
       <UniqueIdentifier>{556ad3f3-f328-420f-94b3-aea0f50f9c7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="聊天记录">
+      <UniqueIdentifier>{14a58701-5fa7-4363-98e4-00d46224fec5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -42,6 +45,9 @@
     <ClInclude Include="UserList.h">
       <Filter>通讯录</Filter>
     </ClInclude>
+    <ClInclude Include="RecvMessage.h">
+      <Filter>聊天记录</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -58,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="UserList.cpp">
       <Filter>通讯录</Filter>
+    </ClCompile>
+    <ClCompile Include="RecvMessage.cpp">
+      <Filter>聊天记录</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

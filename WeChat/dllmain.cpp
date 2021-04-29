@@ -8,6 +8,7 @@
 #include "Common.h"
 #include "UserList.h"
 #include "commctrl.h"
+#include "RecvMessage.h"
 #include <TlHelp32.h>
 
 INT_PTR CALLBACK DialogProc(
@@ -66,6 +67,7 @@ INT_PTR CALLBACK DialogProc(
 			//在获取二维码
 			HookWechatQrcode(hwndDlg, getWechatWin() + 0x25A726);
 			HookWechatUserList(hwndDlg, gUserListView, 0x50B538);
+			HookWechatMsg(hwndDlg, getWechatWin() + 0x3CCB65);
 			//开始登陆HOOK
 		}
 		break;
@@ -79,13 +81,21 @@ INT_PTR CALLBACK DialogProc(
 void InitListContrl(HWND List)
 {
 	LVCOLUMN pcol = { 0 };
-	LPCSTR titleBuffer[] = { "wxid","微信账号","微信昵称" };
+	 //wchar_t titleBuffer[] = { L"wxid",L"微信账号",L"微信昵称" };
 	pcol.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	pcol.fmt = LVCFMT_LEFT;
 	pcol.cx = 120;
 	for (int i = 0; i < 3; i++) {
 		//创建list成员信息
-		pcol.pszText = (LPSTR)titleBuffer[i];
+		if (i == 0) {
+			pcol.pszText = (wchar_t*)L"wxid";
+		}
+		if (i == 1) {
+			pcol.pszText = (wchar_t*)L"微信账号";
+		}
+		if (i == 2) {
+			pcol.pszText = (wchar_t*)L"微信昵称";
+		}
 		ListView_InsertColumn(List, i, &pcol);
 	}
 }
