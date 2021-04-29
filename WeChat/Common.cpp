@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 #include <iostream>
+#include <string.h>
+using namespace std;
 #define HOOK_LEN 5
 
 BYTE backCode[HOOK_LEN] = { 0 };
@@ -11,6 +13,26 @@ DWORD getWechatWin()
 }
 
 
+//************************************************************
+// 函数名称: GetMsgByAddress
+// 函数说明: 从地址中获取消息内容
+// 作    者: GuiShou
+// 时    间: 2019/7/6
+// 参    数: DWORD memAddress  目标地址
+// 返 回 值: LPCWSTR 消息内容
+//************************************************************
+std::wstring GetMsgByAddress(DWORD memAddress)
+{
+	wstring tmp;
+	DWORD msgLength = *(DWORD*)(memAddress + 4);
+	if (msgLength > 0) {
+		WCHAR* msg = new WCHAR[msgLength + 1]{ 0 };
+		wmemcpy_s(msg, msgLength + 1, (WCHAR*)(*(DWORD*)memAddress), msgLength + 1);
+		tmp = msg;
+		delete[]msg;
+	}
+	return  tmp;
+}
 //开始hook
 /**
  * 参数一 hookAdd 想要hook的地址

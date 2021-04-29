@@ -11,6 +11,23 @@
 #include <iostream>
 #include "Common.h"
 
+#include <list>
+#include <tuple>
+#include <string>
+
+using namespace std;
+
+typedef tuple <
+	//wxid1
+	wstring,
+	//wxName
+	wstring,
+	//v1
+	wstring
+> USER_INFO;
+
+//定义7000个用户列表
+list<USER_INFO> userInfoList(1);
 HWND hDlgList = 0;
 DWORD hookData = 0;
 DWORD WinAddList = 0;
@@ -44,19 +61,22 @@ VOID insertUserLists(DWORD userData)
 	DWORD wxNickAdd = userData + 0x64;
 	DWORD headPicAdd = userData + 0xF4;
 	//DWORD wxNickAdd = userData + 0x8C;
+	wstring wxidwstring = GetMsgByAddress(wxidAdd);
+	wstring wxuserIDwstring = GetMsgByAddress(wxuserIDAdd);
+	wstring nickwstring = GetMsgByAddress(wxNickAdd);
 
 	wchar_t wxid[0x100] = { 0 };
-	swprintf_s(wxid, L"%s", *((LPVOID*)wxidAdd));
+	swprintf_s(wxid, L"%s", (wchar_t*)*((LPVOID*)wxidAdd));
 
 	wchar_t nick[0x100] = { 0 };
-	swprintf_s(nick, L"%s", *((LPVOID*)wxNickAdd));
+	swprintf_s(nick, L"%s", (wchar_t*)*((LPVOID*)wxNickAdd));
 
 	wchar_t wxuserID[0x100] = { 0 };
-	swprintf_s(wxuserID, L"%s", *((LPVOID*)wxuserIDAdd));
+	swprintf_s(wxuserID, L"%s", (wchar_t*)*((LPVOID*)wxuserIDAdd));
 
 	wchar_t headPic[0x100] = { 0 };
 	if ((LPVOID*)headPicAdd != 0x0) {
-		swprintf_s(headPic, L"%s", *((LPVOID*)headPicAdd));
+		swprintf_s(headPic, L"%s", (wchar_t*)*((LPVOID*)headPicAdd));
 	}
 	if (oldWxid[0] == 0 && newWxid[0] == 0) {
 		swprintf_s(newWxid, L"%s", *((LPVOID*)wxidAdd));
@@ -72,6 +92,17 @@ VOID insertUserLists(DWORD userData)
 		swprintf_s(newWxid, L"%s", *((LPVOID*)wxidAdd));
 	}
 
+	USER_INFO userInfo(wxidwstring, wxuserIDwstring, nickwstring);
+
+	for (auto& userInfoOld : userInfoList)
+	{
+		wstring wxid1 = get<0>(userInfoOld);
+		if (wxidwstring == wxid1)
+		{
+			return;
+		}
+	}
+	userInfoList.push_front(userInfo);
 	if (wcscmp(oldWxid, newWxid) != 0) {
 
 		LVITEM item = { 0 };
