@@ -78,19 +78,6 @@ VOID insertUserLists(DWORD userData)
 	if ((LPVOID*)headPicAdd != 0x0) {
 		swprintf_s(headPic, L"%s", (wchar_t*)*((LPVOID*)headPicAdd));
 	}
-	if (oldWxid[0] == 0 && newWxid[0] == 0) {
-		swprintf_s(newWxid, L"%s", *((LPVOID*)wxidAdd));
-	}
-
-	if (oldWxid[0] == 0 && newWxid[0] != 0) {
-		swprintf_s(oldWxid, L"%s", newWxid);
-		swprintf_s(newWxid, L"%s", *((LPVOID*)wxidAdd));
-	}
-
-	if (oldWxid[0] != 0 && newWxid[0] != 0) {
-		swprintf_s(oldWxid, L"%s", newWxid);
-		swprintf_s(newWxid, L"%s", *((LPVOID*)wxidAdd));
-	}
 
 	USER_INFO userInfo(wxidwstring, wxuserIDwstring, nickwstring);
 
@@ -103,26 +90,45 @@ VOID insertUserLists(DWORD userData)
 		}
 	}
 	userInfoList.push_front(userInfo);
-	if (wcscmp(oldWxid, newWxid) != 0) {
+	LVITEM item = { 0 };
+	item.mask = LVIF_TEXT;
 
+	item.iSubItem = 0;
+	item.pszText = wxid;
+	ListView_InsertItem(gHwndList, &item);
+
+	item.iSubItem = 1;
+	item.pszText = wxuserID;
+	ListView_SetItem(gHwndList, &item);
+
+	item.iSubItem = 2;
+	item.pszText = nick;
+	ListView_SetItem(gHwndList, &item);
+}
+
+
+void UserListShow() {
+	for (auto& userInfoOld : userInfoList)
+	{
+		wstring wxid1 = get<0>(userInfoOld);
+		wstring wxuserID = get<1>(userInfoOld);
+		wstring nick = get<2>(userInfoOld);
 		LVITEM item = { 0 };
 		item.mask = LVIF_TEXT;
 
 		item.iSubItem = 0;
-		item.pszText = wxid;
+		item.pszText =(wchar_t*) wxid1.c_str();
 		ListView_InsertItem(gHwndList, &item);
 
 		item.iSubItem = 1;
-		item.pszText = wxuserID;
+		item.pszText = (wchar_t*)wxuserID.c_str();
 		ListView_SetItem(gHwndList, &item);
 
 		item.iSubItem = 2;
-		item.pszText = nick;
+		item.pszText = (wchar_t*)nick.c_str();
 		ListView_SetItem(gHwndList, &item);
 	}
 }
-
-
 DWORD cEaxList = 0;
 DWORD cEcxList = 0;
 DWORD cEdxList = 0;

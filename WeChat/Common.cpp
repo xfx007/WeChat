@@ -89,6 +89,16 @@ CHAR* UnicodeToUTF8(const WCHAR* wideStr)
 	return utf8Str;
 }
 
+wchar_t* UTF8ToUnicode(const char* str)
+{
+	int    textlen = 0;
+	wchar_t* result;
+	textlen = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+	result = (wchar_t*)malloc((textlen + 1) * sizeof(wchar_t));
+	memset(result, 0, (textlen + 1) * sizeof(wchar_t));
+	MultiByteToWideChar(CP_UTF8, 0, str, -1, (LPWSTR)result, textlen);
+	return    result;
+}
 char* UnicodeToANSI(const wchar_t* str)
 {
 	char* result;
@@ -98,4 +108,17 @@ char* UnicodeToANSI(const wchar_t* str)
 	memset(result, 0, sizeof(char) * (textlen + 1));
 	WideCharToMultiByte(CP_ACP, 0, str, -1, result, textlen, NULL, NULL);
 	return result;
+}
+//wchar_t转string
+std::string Wchar_tToString(wchar_t* wchar)
+{
+	std::string szDst;
+	wchar_t* wText = wchar;
+	DWORD dwNum = WideCharToMultiByte(CP_OEMCP, NULL, wText, -1, NULL, 0, NULL, FALSE);// WideCharToMultiByte的运用
+	char* psText; // psText为char*的临时数组，作为赋值给std::string的中间变量
+	psText = new char[dwNum];
+	WideCharToMultiByte(CP_OEMCP, NULL, wText, -1, psText, dwNum, NULL, FALSE);// WideCharToMultiByte的再次运用
+	szDst = psText;// std::string赋值
+	delete[]psText;// psText的清除
+	return szDst;
 }

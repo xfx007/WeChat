@@ -25,6 +25,9 @@
     <Filter Include="聊天记录">
       <UniqueIdentifier>{14a58701-5fa7-4363-98e4-00d46224fec5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="功能">
+      <UniqueIdentifier>{03499fe8-2eb3-4814-98cc-4d0438add0b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="RecvMessage.h">
       <Filter>聊天记录</Filter>
     </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>功能</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -68,10 +74,18 @@
     <ClCompile Include="RecvMessage.cpp">
       <Filter>聊天记录</Filter>
     </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>功能</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WeChat.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource.hm">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
 </Project>
